@@ -3,6 +3,7 @@ import cv2
 import rasterio
 import matplotlib.pyplot as plt
 from rasterio.warp import reproject, Resampling
+from matplotlib.colors import LogNorm, Normalize
 
 def ajustar_contraste_canal(canal, limiares=(2,98)):
     """
@@ -74,7 +75,7 @@ def alinhar_imagens(caminho_satelite, caminho_relevo):
 
     print("Processamento finalizado.")
     # Retorna os produtos separados: um para ver, os outros para calcular
-    return imagem_satelite_rgb_final, imagem_relevo_final, g_bruto, nir_bruto, nodata_value_relevo
+    return imagem_satelite_rgb_final, imagem_relevo_final, r_bruto, g_bruto, nir_bruto, nodata_value_relevo, res
 
 
 def fundir_imagens_v1(imagem_satelite_rgb, imagem_relevo):
@@ -243,3 +244,78 @@ def criar_mapa_agua_v4_ndwi(banda_verde_raw, banda_nir_raw, limiar=0.0):
 
     print("Mapa de Hidrografia (NDWI) criado com sucesso!")
     return mapa_agua, ndwi
+
+
+def criar_mapa_declividade(imagem_relevo, resolucao_pixel, nodata_value, limiar_graus=15.0):
+    """
+    [VERSÃO FINAL ROBUSTA] Calcula a declividade (slope) do terreno de forma
+    cientificamente correta, ignorando os valores 'nodata'.
+    """
+    print(f"Calculando mapa de declividade com limiar de {limiar_graus}°...")
+
+    # 1. Cria uma máscara para identificar onde estão os dados válidos
+    mascara_dados_validos = imagem_relevo != nodata_value
+
+    # 2. Cria um array para guardar o resultado do slope, preenchido com 0
+    slope_em_graus = np.zeros_like(imagem_relevo, dtype=float)
+
+    # 3. Calcula o gradiente APENAS para os dados válidos
+    # Para isso, criamos uma cópia do relevo e substituímos o nodata por um valor neutro (interpolação)
+    relevo_copia = imagem_relevo.astype(float)
+    relevo_copia[~mascara_dados_validos] = np.mean(relevo_copia[mascara_dados_validos])  # Preenche com a média
+
+    gy, gx = np.gradient(relevo_copia, resolucao_pixel)
+
+    # Calcula a declividade em graus
+    slope_calculado = np.degrees(np.arctan(np.sqrt(gx ** 2 + gy ** 2)))
+
+    # 4. Aplica o resultado de volta no nosso array de slope, APENAS nos locais válidos
+    slope_em_graus[mascara_dados_validos] = slope_calculado[mascara_dados_validos]
+
+    # 5. Aplica o limiar para criar a máscara final de áreas íngremes
+    mascara_declividade = slope_em_graus > limiar_graus
+    mapa_final = mascara_declividade.astype(np.uint8) * 255
+
+    print("Mapa de declividade criado com sucesso.")
+    return mapa_final, slope_em_graus
+
+
+def criar_mapa_declividade_visual(imagem_relevo, limiar_indice):
+    """
+    [VERSÃO VISUAL DEFINITIVA] Calcula um "índice de inclinação" relativo,
+    otimizado para a visualização, e cria a máscara binária.
+    """
+    # 1. Calcula o gradiente simples, que já sabemos que gera um bom contraste visual.
+    gy, gx = np.gradient(imagem_relevo.astype(float))
+    indice_inclinacao = np.sqrt(gx ** 2 + gy ** 2)
+
+    # 2. Aplica o limiar do slider para criar a máscara binária.
+    mascara = indice_inclinacao > limiar_indice
+    mapa_binario_final = mascara.astype(np.uint8) * 255
+
+    # Retorna o mapa binário e o mapa de índice para a visualização.
+    return mapa_binario_final, indice_inclinacao
+
+
+def criar_visualizacao_overlay(imagem_base_rgb, mascara, cor_rgb=(255, 0, 0), alpha=0.5):
+    """
+    [VERSÃO FINAL ESTÁVEL] Cria uma visualização sobrepondo uma máscara colorida
+    semi-transparente sobre uma imagem base.
+    """
+    # 1. Cria uma cópia da imagem para não modificar a original
+    imagem_final = imagem_base_rgb.copy()
+
+    # 2. Cria uma imagem de cor sólida (ex: toda vermelha)
+    overlay_color = np.full(imagem_base_rgb.shape, cor_rgb, dtype=np.uint8)
+
+    # 3. Mistura a imagem base com a imagem de cor sólida para criar o efeito de transparência
+    imagem_misturada = cv2.addWeighted(imagem_final, 1 - alpha, overlay_color, alpha, 0)
+
+    # 4. Usa a máscara como um "estêncil" para aplicar a mistura
+    # Garante que a máscara tenha 3 dimensões para funcionar com a imagem colorida
+    mascara_3d = mascara[:, :, np.newaxis]
+
+    # Onde a máscara for branca (>0), usa a imagem misturada. Senão, mantém a imagem original.
+    imagem_com_overlay = np.where(mascara_3d > 0, imagem_misturada, imagem_final)
+
+    return imagem_com_overlay
