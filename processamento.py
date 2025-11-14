@@ -319,3 +319,120 @@ def criar_visualizacao_overlay(imagem_base_rgb, mascara, cor_rgb=(255, 0, 0), al
     imagem_com_overlay = np.where(mascara_3d > 0, imagem_misturada, imagem_final)
 
     return imagem_com_overlay
+
+""" ---------- ADICIONADO DO OUTRO CÓDIGO A PARTIR DAQUI ---------- """
+
+def criar_mapa_vegetacao_ndvi(banda_vermelha_raw, banda_nir_raw, limiar=0.4):
+    """
+    [FEATURE 3] Calcula o Índice de Vegetação por Diferença Normalizada (NDVI)
+    e cria um mapa binário que identifica áreas de vegetação densa.
+
+    O NDVI é um indicador robusto da saúde e densidade da vegetação. A fórmula é:
+    NDVI = (NIR - Vermelho) / (NIR + Vermelho).
+    Valores altos (próximos de 1) indicam vegetação densa, enquanto valores baixos
+    (próximos de 0 ou negativos) indicam solo, rocha ou água.
+
+    Args:
+        banda_vermelha_raw (np.array): Matriz da banda Vermelha (dados brutos).
+        banda_nir_raw (np.array): Matriz da banda Infravermelha (dados brutos).
+        limiar (float): O valor de corte para o NDVI. Pixels com NDVI > limiar
+                        serão considerados vegetação densa. O padrão é 0.4.
+
+    Returns:
+        tuple: Uma tupla contendo (mapa_ndvi, mapa_vegetacao).
+               - mapa_ndvi (np.array): Mapa com valores de -1 a 1 (o índice científico).
+               - mapa_vegetacao (np.array): Mapa binário (0 ou 255) onde 255
+                 representa áreas com vegetação ACIMA do limiar.
+    """
+    print(f"Calculando NDVI com limiar de {limiar}...")
+
+    # 1. Converte as bandas para float para permitir cálculos de divisão.
+    vermelho = banda_vermelha_raw.astype(float)
+    nir = banda_nir_raw.astype(float)
+
+    # 2. Calcula o NDVI, com segurança para evitar divisão por zero.
+    numerador = nir - vermelho
+    denominador = nir + vermelho
+    mapa_ndvi = np.divide(numerador, denominador, out=np.zeros_like(numerador), where=denominador != 0)
+
+    # 3. Cria a máscara binária de vegetação com base no limiar.
+    mascara_vegetacao = mapa_ndvi > limiar
+    mapa_vegetacao = mascara_vegetacao.astype(np.uint8) * 255
+
+    print("Mapa de vegetação (NDVI) criado com sucesso!")
+    return mapa_ndvi, mapa_vegetacao
+
+
+def normalizar_feature(mapa_binario, valor_positivo=1.0, valor_negativo=-1.0):
+    """
+    [ETAPA 3.1] Converte um mapa de feature binário (0 e 255) em um mapa de
+    pontuação normalizado (ex: +1.0 e -1.0).
+
+    Esta função é o primeiro passo para a modelagem do score. Ela traduz as
+    features, que estão em "unidades" diferentes (apenas identificando a presença
+    ou ausência de uma característica), para uma escala universal de "pontos de
+    viabilidade".
+
+    Por padrão, assume-se que o valor 0 no mapa binário é "bom" para a construção
+    (ex: sem mata, terreno plano) e o valor 255 é "ruim" (ex: com mata, íngreme).
+
+    Args:
+        mapa_binario (np.array): O mapa de feature com valores 0 e 255.
+        valor_positivo (float): A pontuação a ser atribuída às áreas "boas" (onde o mapa é 0).
+        valor_negativo (float): A pontuação a ser atribuída às áreas "ruins" (onde o mapa é 255).
+
+    Returns:
+        np.array: Um mapa com o mesmo formato do original, mas com os valores
+                  convertidos para a nova escala de pontuação (em float).
+    """
+    # 1. Cria um "molde" de floats com o mesmo tamanho do mapa original.
+    mapa_normalizado = np.zeros(mapa_binario.shape, dtype=float)
+
+    # 2. Aplica as regras de tradução.
+    #    Onde o mapa original era 0 (bom), o novo mapa recebe o valor_positivo.
+    mapa_normalizado[mapa_binario == 0] = valor_positivo
+    #    Onde o mapa original era 255 (ruim), o novo mapa recebe o valor_negativo.
+    mapa_normalizado[mapa_binario == 255] = valor_negativo
+
+    return mapa_normalizado
+
+
+
+def criar_score_proximidade_agua(mapa_agua, dist_ideal_pixels=5, dist_max_pixels=100):
+    """
+    [FEATURE 4] Cria um mapa de score baseado na proximidade da água.
+
+    Calcula a distância de cada pixel de terra até a água mais próxima.
+    Em seguida, normaliza essa distância em uma pontuação de viabilidade (-1 a +1),
+    onde estar perto da água é considerado positivo.
+
+    Args:
+        mapa_agua (np.array): O mapa binário de água (255 para água, 0 para terra).
+        dist_ideal_pixels (int): Distância em pixels considerada "perfeita" (score +1.0).
+        dist_max_pixels (int): Distância máxima em pixels onde a água ainda tem
+                               influência positiva. Acima disso, o score se torna negativo.
+
+    Returns:
+        tuple: Uma tupla contendo (mapa_distancia, score_proximidade).
+               - mapa_distancia (np.array): Mapa com a distância real em pixels para a água.
+               - score_proximidade (np.array): Mapa de pontuação normalizado (-1 a +1).
+    """
+    print("Calculando score de proximidade à água...")
+
+    # 1. A função distanceTransform precisa do inverso do mapa de água.
+    #    Ela calcula a distância de cada pixel NÃO-ZERO até o ZERO mais próximo.
+    mapa_terra = (mapa_agua == 0).astype(np.uint8)
+    mapa_distancia = cv2.distanceTransform(mapa_terra, cv2.DIST_L2, 5)
+
+    # 2. Normaliza a distância para a escala de pontuação.
+    #    Esta fórmula mapeia a distância para o intervalo [-1, 1].
+    #    - Se distancia <= dist_ideal, score = 1.0
+    #    - Se distancia >= dist_max, score tende a -1.0
+    score_proximidade = 1 - 2 * ((mapa_distancia - dist_ideal_pixels) / (dist_max_pixels - dist_ideal_pixels))
+
+    # 3. Garante que o score fique exatamente entre -1 e 1 e zera na água.
+    score_proximidade = np.clip(score_proximidade, -1.0, 1.0)
+    score_proximidade[mapa_agua == 255] = 0  # Zera o score na água
+
+    print("Score de proximidade à água criado com sucesso!")
+    return mapa_distancia, score_proximidade

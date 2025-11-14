@@ -5,15 +5,78 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e3d80d0e-f66f-4aa2-af06-f794ced00c60" name="Changes" comment="Projeto Oraculum - 'Patch Notes' da Versão 0.2&#10;&#10;🏗️ Estrutura e Organização do Projeto&#10;&#10;- Código Refatorado em Módulos: A lógica foi separada em arquivos Python distintos [processamento.py, obter_dados.py (já existentes, mas atualizados) e utilitarios.py (novo!)].&#10;&#10;- Sistema de Saída Organizado: Foi criada uma pasta outputs que agora armazena os resultados (imagens e gráficos) de cada análise em subpastas únicas por sessão, nomeadas com a data e hora (timestamp), evitando a desorganização na raiz do projeto e salvando um registro de cada operação.&#10;&#10;- Gerenciamento de Dependências (novo!): O projeto agora conta com um arquivo requirements.txt, permitindo a recriação do ambiente de trabalho em qualquer máquina com um único comando (pip install -r requirements.txt).&#10;&#10;&#10;🛰️ Aquisição de Dados&#10;&#10;- Seleção de Área Inteligente: O método de seleção de área foi completamente redesenhado. A imprecisão da &quot;régua manual&quot; do Google Earth foi substituída por uma função programática que gera um quadrado de área precisa a partir de um único ponto central e um tamanho em km (personalizável).&#10;&#10;- Conversor de Coordenadas: Foi desenvolvido um utilitário para converter coordenadas do formato humano (DMS: Graus, Minutos, Segundos) para o formato de máquina (DD: Graus Decimais) automaticamente.&#10;&#10;- Histórico de Dados: Todos os arquivos de dados brutos (.tif) agora são salvos com um timestamp em seu nome e em sua própria pasta, garantindo que análises antigas não sejam sobrescritas e criando um histórico de consultas.&#10;&#10;&#10;🖼️ Processamento e Alinhamento de Imagem&#10;&#10;- Alinhamento por Reprojeção: A função alinhar_imagens foi completamente repensada...&#10;&#10;- Função de Contraste Flexível: A função ajustar_contraste_canal foi aprimorada...&#10;&#10;&#10;📊 Visualização&#10;&#10;- Visualização 3D com Hillshade (novo!): Foi implementada uma nova função de visualização 3D...&#10;&#10;&#10;📓 Notebook Principal&#10;&#10;- Fluxo de Trabalho Otimizado: O notebook foi reestruturado com um novo fluxo de trabalho modular...&#10;&#10;&#10;Tempo Total de Desenvolvimento: Aproximadamente 13h20min (Semana 1).">
-      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utilitarios.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.ipynb_checkpoints/Oraculum-checkpoint.ipynb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20250905_174724/20250905_174724_relevo.tif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20250905_174724/20250905_174724_satelite.tif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20250905_174724/comparacao_alinhamento.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20250905_174724/relevo_alinhado.tif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20250905_174724/relevo_alinhado_visual.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20250905_174724/satelite_alinhado.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20250905_174724/visualizacao_3D_v1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20250905_174724/visualizacao_3D_v2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20250924_172347/20250924_172347_relevo.tif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20250924_172347/20250924_172347_satelite.tif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20250924_172347/comparacao_alinhamento.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20250924_172347/mapa_agua_v1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20250924_172347/mapa_agua_v2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20250924_172347/relevo_alinhado.tif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20250924_172347/relevo_alinhado_visual.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20250924_172347/satelite_alinhado.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20250924_172347/visualizacao_3D_v1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20250924_172347/visualizacao_3D_v2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20251013_163542/20251013_163542_relevo.tif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20251013_163542/20251013_163542_satelite.tif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20251013_163542/comparacao_alinhamento.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20251013_163542/comparacao_declividade.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20251013_163542/comparacao_hidrografia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20251013_163542/mapa_agua_ndwi.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20251013_163542/mapa_agua_ndwi_calibrado.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20251013_163542/mapa_agua_v1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20251013_163542/mapa_agua_v2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20251013_163542/mapa_declividade.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20251013_163542/mapa_indice_inclinacao.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20251013_163542/nir_alinhado.tif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20251013_163542/relevo_alinhado.tif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20251013_163542/relevo_alinhado_visual.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20251013_163542/satelite_alinhado_visual.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20251013_163542/visualizacao_3D_v1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20251013_163542/visualizacao_3D_v2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20251015_214737/20251015_214737_relevo.tif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20251015_214737/20251015_214737_satelite.tif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20251015_214737/comparacao_alinhamento.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20251015_214737/comparacao_hidrografia_ndwi_final.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20251015_214737/comparacao_vegetacao.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20251015_214737/comparativo_hidrografia_v1_v2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20251015_214737/comparativo_processo_ndwi.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20251015_214737/mapa_agua_v1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20251015_214737/mapa_agua_v2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20251015_214737/mapa_agua_v3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20251015_214737/mapa_agua_v3_calibrado.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20251015_214737/mapa_ndwi_cientifico.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20251015_214737/mapa_ndwi_escala_azuis.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20251015_214737/mapa_vegetacao.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20251015_214737/visualizacao_3D_v1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20251015_214737/visualizacao_3D_v2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20251113_235254/20251113_235254_relevo.tif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/20251113_235254/20251113_235254_satelite.tif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/old/comparacao_visualizacoes_3d.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/old/output.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/old/relevo_20250903_184459.tif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/old/relevo_20250903_201232.tif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/old/relevo_oraculum.tif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/old/satelite_20250903_184459.tif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/old/satelite_20250903_201232.tif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/old/satelite_oraculum.tif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/old/visualizacao_3d_50_50.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/old/visualizacao_3d_70_30.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/old/visualizacao_3d_75_25.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/old/visualizacao_3d_80_20.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/old/visualizacao_3d_85_15.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/outputs/old/área.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Oraculum.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Oraculum.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obter_dados.py" beforeDir="false" afterPath="$PROJECT_DIR$/obter_dados.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/processamento.py" beforeDir="false" afterPath="$PROJECT_DIR$/processamento.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/relevo_oraculum.tif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/satelite_oraculum.tif" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,7 +102,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/Febas17/Oraculum.git&quot;,
-    &quot;accountId&quot;: &quot;e803aefd-544c-4908-8f35-241b75dfaf64&quot;
+    &quot;accountId&quot;: &quot;0ca44a6f-a3ef-46bc-b02a-fb06c843379e&quot;
   }
 }</component>
   <component name="ProjectColorInfo">{
@@ -60,9 +123,21 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.fonts.default&quot;
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Rafael/PycharmProjects/Oraculum&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.fonts.default&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Rafael\PycharmProjects\Oraculum" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="obter_dados" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Oraculum" />
@@ -77,6 +152,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/obter_dados.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
@@ -95,7 +171,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-1bde30d8e611-7b97d883f26b-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-252.25557.130" />
+        <option value="bundled-js-predefined-d6986cc7102b-b598e85cdad2-JavaScript-PY-252.25557.178" />
+        <option value="bundled-python-sdk-ce6832f46686-7b97d883f26b-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-252.25557.178" />
       </set>
     </attachedChunks>
   </component>
@@ -106,6 +183,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1756753624629</updated>
+      <workItem from="1762860483163" duration="1031000" />
+      <workItem from="1762861535312" duration="7002000" />
     </task>
     <task id="LOCAL-00001" summary="Versão inicial do Projeto (dia 2)">
       <option name="closed" value="true" />
@@ -131,8 +210,19 @@
       <option name="project" value="LOCAL" />
       <updated>1757110346007</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Projeto Oraculum - 'Patch Notes' da Versão 0.2&#10;&#10;🏗️ Estrutura e Organização do Projeto&#10;&#10;- Código Refatorado em Módulos: A lógica foi separada em arquivos Python distintos [processamento.py, obter_dados.py (já existentes, mas atualizados) e utilitarios.py (novo!)].&#10;&#10;- Sistema de Saída Organizado: Foi criada uma pasta outputs que agora armazena os resultados (imagens e gráficos) de cada análise em subpastas únicas por sessão, nomeadas com a data e hora (timestamp), evitando a desorganização na raiz do projeto e salvando um registro de cada operação.&#10;&#10;- Gerenciamento de Dependências (novo!): O projeto agora conta com um arquivo requirements.txt, permitindo a recriação do ambiente de trabalho em qualquer máquina com um único comando (pip install -r requirements.txt).&#10;&#10;&#10;🛰️ Aquisição de Dados&#10;&#10;- Seleção de Área Inteligente: O método de seleção de área foi completamente redesenhado. A imprecisão da &quot;régua manual&quot; do Google Earth foi substituída por uma função programática que gera um quadrado de área precisa a partir de um único ponto central e um tamanho em km (personalizável).&#10;&#10;- Conversor de Coordenadas: Foi desenvolvido um utilitário para converter coordenadas do formato humano (DMS: Graus, Minutos, Segundos) para o formato de máquina (DD: Graus Decimais) automaticamente.&#10;&#10;- Histórico de Dados: Todos os arquivos de dados brutos (.tif) agora são salvos com um timestamp em seu nome e em sua própria pasta, garantindo que análises antigas não sejam sobrescritas e criando um histórico de consultas.&#10;&#10;&#10;🖼️ Processamento e Alinhamento de Imagem&#10;&#10;- Alinhamento por Reprojeção: A função alinhar_imagens foi completamente repensada...&#10;&#10;- Função de Contraste Flexível: A função ajustar_contraste_canal foi aprimorada...&#10;&#10;&#10;📊 Visualização&#10;&#10;- Visualização 3D com Hillshade (novo!): Foi implementada uma nova função de visualização 3D...&#10;&#10;&#10;📓 Notebook Principal&#10;&#10;- Fluxo de Trabalho Otimizado: O notebook foi reestruturado com um novo fluxo de trabalho modular...&#10;&#10;&#10;Tempo Total de Desenvolvimento: Aproximadamente 13h20min (Semana 1).">
+      <option name="closed" value="true" />
+      <created>1762870106535</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1762870106535</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -155,6 +245,10 @@
     <MESSAGE value="Versão inicial do Projeto (dia 2)" />
     <MESSAGE value="Projeto Oraculum - 'Patch Notes' da Versão 0.2&#10;&#10;️ Estrutura e Organização do Projeto&#10;&#10;- Código Refatorado em Módulos: A lógica foi separada em arquivos Python distintos [processamento.py, obter_dados.py (já existentes, mas atualizados) e utilitarios.py (novo!)].&#10;&#10;- Sistema de Saída Organizado: Foi criada uma pasta outputs que agora armazena os resultados (imagens e gráficos) de cada análise em subpastas únicas por sessão, nomeadas com a data e hora (timestamp), evitando a desorganização na raiz do projeto e salvando um registro de cada operação.&#10;&#10;- Gerenciamento de Dependências (novo!): O projeto agora conta com um arquivo requirements.txt, permitindo a recriação do ambiente de trabalho em qualquer máquina com um único comando (pip install -r requirements.txt).&#10;&#10;&#10;️ Aquisição de Dados&#10;- Seleção de Área Inteligente: O método de seleção de área foi completamente redesenhado. A imprecisão da &quot;régua manual&quot; do Google Earth foi substituída por uma função programática que gera um quadrado de área precisa a partir de um único ponto central e um tamanho em km (personalizável).&#10;&#10;- Conversor de Coordenadas: Foi desenvolvido um utilitário para converter coordenadas do formato humano (DMS: Graus, Minutos, Segundos) para o formato de máquina (DD: Graus Decimais) automaticamente.&#10;&#10;- Histórico de Dados: Todos os arquivos de dados brutos (.tif) agora são salvos com um timestamp em seu nome e em sua própria pasta, garantindo que análises antigas não sejam sobrescritas e criando um histórico de consultas.&#10;&#10;&#10;️ Processamento e Alinhamento de Imagem&#10;&#10;- Alinhamento por Reprojeção: A função alinhar_imagens foi completamente repensada...&#10;&#10;- Função de Contraste Flexível: A função ajustar_contraste_canal foi aprimorada...&#10;&#10;&#10; Visualização&#10;&#10;- Visualização 3D com Hillshade (novo!): Foi implementada uma nova função de visualização 3D...&#10;&#10;&#10; Notebook Principal&#10;&#10;- Fluxo de Trabalho Otimizado: O notebook foi reestruturado com um novo fluxo de trabalho modular...&#10;&#10;&#10;Tempo Total de Desenvolvimento: Aproximadamente 13h20min (Semana 1)." />
     <MESSAGE value="Projeto Oraculum - 'Patch Notes' da Versão 0.2&#10;&#10;️ Estrutura e Organização do Projeto&#10;&#10;- Código Refatorado em Módulos: A lógica foi separada em arquivos Python distintos [processamento.py, obter_dados.py (já existentes, mas atualizados) e utilitarios.py (novo!)].&#10;&#10;- Sistema de Saída Organizado: Foi criada uma pasta outputs que agora armazena os resultados (imagens e gráficos) de cada análise em subpastas únicas por sessão, nomeadas com a data e hora (timestamp), evitando a desorganização na raiz do projeto e salvando um registro de cada operação.&#10;&#10;- Gerenciamento de Dependências (novo!): O projeto agora conta com um arquivo requirements.txt, permitindo a recriação do ambiente de trabalho em qualquer máquina com um único comando (pip install -r requirements.txt).&#10;&#10;&#10;️ Aquisição de Dados&#10;&#10;- Seleção de Área Inteligente: O método de seleção de área foi completamente redesenhado. A imprecisão da &quot;régua manual&quot; do Google Earth foi substituída por uma função programática que gera um quadrado de área precisa a partir de um único ponto central e um tamanho em km (personalizável).&#10;&#10;- Conversor de Coordenadas: Foi desenvolvido um utilitário para converter coordenadas do formato humano (DMS: Graus, Minutos, Segundos) para o formato de máquina (DD: Graus Decimais) automaticamente.&#10;&#10;- Histórico de Dados: Todos os arquivos de dados brutos (.tif) agora são salvos com um timestamp em seu nome e em sua própria pasta, garantindo que análises antigas não sejam sobrescritas e criando um histórico de consultas.&#10;&#10;&#10;️ Processamento e Alinhamento de Imagem&#10;&#10;- Alinhamento por Reprojeção: A função alinhar_imagens foi completamente repensada...&#10;&#10;- Função de Contraste Flexível: A função ajustar_contraste_canal foi aprimorada...&#10;&#10;&#10; Visualização&#10;&#10;- Visualização 3D com Hillshade (novo!): Foi implementada uma nova função de visualização 3D...&#10;&#10;&#10; Notebook Principal&#10;&#10;- Fluxo de Trabalho Otimizado: O notebook foi reestruturado com um novo fluxo de trabalho modular...&#10;&#10;&#10;Tempo Total de Desenvolvimento: Aproximadamente 13h20min (Semana 1)." />
+    <MESSAGE value="Projeto Oraculum - 'Patch Notes' da Versão 0.2&#10;&#10;️ Estrutura e Organização do Projeto&#10;&#10;- Código Refatorado em Módulos: A lógica foi separada em arquivos Python distintos [processamento.py, obter_dados.py (já existentes, mas atualizados) e utilitarios.py (novo!)].&#10;&#10;- Sistema de Saída Organizado: Foi criada uma pasta outputs que agora armazena os resultados (imagens e gráficos) de cada análise em subpastas únicas por sessão, nomeadas com a data e hora (timestamp), evitando a desorganização na raiz do projeto e salvando um registro de cada operação.&#10;&#10;- Gerenciamento de Dependências (novo!): O projeto agora conta com um arquivo requirements.txt, permitindo a recriação do ambiente de trabalho em qualquer máquina com um único comando (pip install -r requirements.txt).&#10;&#10;&#10;️ Aquisição de Dados&#10;&#10;- Seleção de Área Inteligente: O método de seleção de área foi completamente redesenhado. A imprecisão da &quot;régua manual&quot; do Google Earth foi substituída por uma função programática que gera um quadrado de área precisa a partir de um único ponto central e um tamanho em km (personalizável).&#10;&#10;- Conversor de Coordenadas: Foi desenvolvido um utilitário para converter coordenadas do formato humano (DMS: Graus, Minutos, Segundos) para o formato de máquina (DD: Graus Decimais) automaticamente.&#10;&#10;- Histórico de Dados: Todos os arquivos de dados brutos (.tif) agora são salvos com um timestamp em seu nome e em sua própria pasta, garantindo que análises antigas não sejam sobrescritas e criando um histórico de consultas.&#10;&#10;&#10;️ Processamento e Alinhamento de Imagem&#10;&#10;- Alinhamento por Reprojeção: A função alinhar_imagens foi completamente repensada...&#10;&#10;- Função de Contraste Flexível: A função ajustar_contraste_canal foi aprimorada...&#10;&#10;&#10; Visualização&#10;&#10;- Visualização 3D com Hillshade (novo!): Foi implementada uma nova função de visualização 3D...&#10;&#10;&#10; Notebook Principal&#10;&#10;- Fluxo de Trabalho Otimizado: O notebook foi reestruturado com um novo fluxo de trabalho modular...&#10;&#10;&#10;Tempo Total de Desenvolvimento: Aproximadamente 13h20min (Semana 1)." />
     <option name="LAST_COMMIT_MESSAGE" value="Projeto Oraculum - 'Patch Notes' da Versão 0.2&#10;&#10;️ Estrutura e Organização do Projeto&#10;&#10;- Código Refatorado em Módulos: A lógica foi separada em arquivos Python distintos [processamento.py, obter_dados.py (já existentes, mas atualizados) e utilitarios.py (novo!)].&#10;&#10;- Sistema de Saída Organizado: Foi criada uma pasta outputs que agora armazena os resultados (imagens e gráficos) de cada análise em subpastas únicas por sessão, nomeadas com a data e hora (timestamp), evitando a desorganização na raiz do projeto e salvando um registro de cada operação.&#10;&#10;- Gerenciamento de Dependências (novo!): O projeto agora conta com um arquivo requirements.txt, permitindo a recriação do ambiente de trabalho em qualquer máquina com um único comando (pip install -r requirements.txt).&#10;&#10;&#10;️ Aquisição de Dados&#10;&#10;- Seleção de Área Inteligente: O método de seleção de área foi completamente redesenhado. A imprecisão da &quot;régua manual&quot; do Google Earth foi substituída por uma função programática que gera um quadrado de área precisa a partir de um único ponto central e um tamanho em km (personalizável).&#10;&#10;- Conversor de Coordenadas: Foi desenvolvido um utilitário para converter coordenadas do formato humano (DMS: Graus, Minutos, Segundos) para o formato de máquina (DD: Graus Decimais) automaticamente.&#10;&#10;- Histórico de Dados: Todos os arquivos de dados brutos (.tif) agora são salvos com um timestamp em seu nome e em sua própria pasta, garantindo que análises antigas não sejam sobrescritas e criando um histórico de consultas.&#10;&#10;&#10;️ Processamento e Alinhamento de Imagem&#10;&#10;- Alinhamento por Reprojeção: A função alinhar_imagens foi completamente repensada...&#10;&#10;- Função de Contraste Flexível: A função ajustar_contraste_canal foi aprimorada...&#10;&#10;&#10; Visualização&#10;&#10;- Visualização 3D com Hillshade (novo!): Foi implementada uma nova função de visualização 3D...&#10;&#10;&#10; Notebook Principal&#10;&#10;- Fluxo de Trabalho Otimizado: O notebook foi reestruturado com um novo fluxo de trabalho modular...&#10;&#10;&#10;Tempo Total de Desenvolvimento: Aproximadamente 13h20min (Semana 1)." />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Oraculum$obter_dados.coverage" NAME="obter_dados Coverage Results" MODIFIED="1762863572079" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
